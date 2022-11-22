@@ -49,12 +49,37 @@ Configuration
 
 Documentation
 =============
-  
+
+    Supported objects:
+        'psp',
+        'solo',
+        'stereo_a'
+        'stereo_b'
+        'wind'
+        'earth'
+        'venus'
+        'mercury'
+        'sun'
+
+
     
 
 Usage
 =====
 
+.. code-block::
+
+        # Generate map
+    solarsystem = hsl(date=[year, month, day], objects=objects,orbitlength=5, timeres=24)
+
+    # gives the location of the objects at the specified DATE without orbits or labels.
+    stations_rsun = np.array(solarsystem.locate_simple())
+
+    # Plotting map of objects
+    figure = solarsystem.plot()
+
+    # Verbose version of coordinates with orbit, with labels. the last position is the specified date.
+    coordinates = np.array(solarsystem.locate())
 
 
 Bugs & Contribution
