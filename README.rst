@@ -27,7 +27,9 @@ Installation
 ============
 
 download and include in your python script:
+
 .. code-block::
+
     import heliospacecraftlocation as hsl
 
 Configuration
