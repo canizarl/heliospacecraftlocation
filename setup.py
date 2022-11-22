@@ -16,7 +16,7 @@ setup(
     long_description_content_type="text/markdown",
     long_description=long_description,
     packages=find_packages(),
-    install_requires=['sunpy', 'astropy', 'matplotlib', 'numpy', 'sys', 'datetime'],
+    install_requires=['sunpy', 'astropy'],
     keywords=['python', 'solar', 'nasa', 'esa', 'spacecraft', 'coordinates', 'sun', 'corona', 'parker', 'solar orbiter'],
     classifiers=[
         "Development Status :: 1 - Planning",
