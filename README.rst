@@ -11,9 +11,9 @@ heliospacecraftlocation uses SunPy to plot and return coordinates of different s
 
 Features:
 
-- 1  Returns point coordinates in HEE and Rsun of Spacecraft and Planets for a give date
-- 2  Returns a range of coordinates in HEE and Rsun for a date and previous number of days before for spacecraft and planets. 
-- 3  Plots in HEE 
+-   Returns point coordinates in HEE and Rsun of Spacecraft and Planets for a give date
+-   Returns a range of coordinates in HEE and Rsun for a date and previous number of days before for spacecraft and planets. 
+-   Plots in HEE 
 
 Contributions and comments are welcome using Github at: 
 https://github.com/canizarl/heliospacecraftlocation
