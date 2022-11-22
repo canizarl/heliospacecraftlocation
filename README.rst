@@ -5,6 +5,7 @@ HelioSpacecraftLocation
 .. image:: http://img.shields.io/badge/powered%20by-SunPy-orange.svg?style=flat
     :target: http://www.sunpy.org
     :alt: Powered by SunPy Badge
+ 
     
 heliospacecraftlocation uses SunPy to plot and return coordinates of different spacecraft and planets around the sun give a date. 
 
@@ -20,6 +21,7 @@ https://github.com/canizarl/heliospacecraftlocation
 Please note that project-name requires:
 
 - SunPy 
+- Astropy
 
 Installation
 ============
