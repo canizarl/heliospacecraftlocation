@@ -51,8 +51,8 @@ Documentation
 =============
 
     Supported objects:
-        'psp',
-        'solo',
+        'psp'
+        'solo'
         'stereo_a'
         'stereo_b'
         'wind'
