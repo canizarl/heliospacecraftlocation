@@ -2,12 +2,12 @@
 import matplotlib.pyplot as plt
 from datetime import datetime as dt
 from datetime import timedelta
-import astropy.units as u
+#import astropy.units as u
 from astropy.constants import c, m_e, R_sun, e, eps0, au
 import numpy as np
 import sys
 
-from sunpy.time import parse_time
+#from sunpy.time import parse_time
 from sunpy.coordinates import get_horizons_coord
 
 
