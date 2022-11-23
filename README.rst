@@ -66,11 +66,14 @@ Documentation
 
 Usage
 =====
+EXAMPLE:
 
 .. code-block::
-
+    
+    objects = objects = ['sun', 'earth', 'venus', 'psp', 'solo']
+    
     # Generate map
-    solarsystem = hsl(date=[year, month, day], objects=objects,orbitlength=5, timeres=24)
+    solarsystem = hsl(date=[2021, 06, 26], objects=objects,orbitlength=5, timeres=24)
 
     # gives the location of the objects at the specified DATE without orbits or labels.
     simple_coord_rsun = np.array(solarsystem.locate_simple())
