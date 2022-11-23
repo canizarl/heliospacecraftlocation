@@ -11,6 +11,37 @@ from sunpy.time import parse_time
 from sunpy.coordinates import get_horizons_coord
 
 
+def help():
+    # UPDATE HELP
+    string = f"hsl returns an array with positions of objects in solar sytem\n" \
+             f"objects supported: sun mercury venus earth psp solo stereo_a stereo_b wind\n" \
+             f"\n" \
+             f"date: year:int\n" \
+             f"      \tmonth:int\n" \
+             f"      \tday:int\n" \
+             f"objects: list of strings with object ids\n" \
+             f"timeres:int  -  time resolution in hours for positions.\n" \
+             f"         \t24: 1 position every 24 hours\n" \
+             f"         \t1: 1 position for every hour of the day" \
+             f"\n"
+    string2 = f"USAGE:\n" \
+              f"----------------------------" \
+              f"\n" \
+              f"objects = ['sun', 'earth', 'venus', 'psp', 'solo']\n" \
+              f"\n" \
+              f"# Generate map\n" \
+              f"solarsystem = hsl.hsl(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)\n" \
+              f"\n" \
+              f"# gives the location of the objects at the specified DATE without orbits or labels.\n" \
+              f"simple_coord_rsun = np.array(solarsystem.locate_simple())\n" \
+              f"\n" \
+              f"# Plotting map of objects\n" \
+              f"figure = solarsystem.plot()\n" \
+              f"\n" \
+              f"# Verbose version of coordinates with orbit, with labels. the last position is the specified date.\n" \
+              f"coord_rsun = np.array(solarsystem.locate())\n"
+    print(string)
+    print(string2)
 
 
 class hsl:
@@ -270,37 +301,6 @@ class hsl:
         plt.show(block=False)
         return plt.gcf()
 
-    def help(self):
-        # UPDATE HELP
-        string = f"hsl returns an array with positions of objects in solar sytem\n" \
-              f"objects supported: sun mercury venus earth psp solo stereo_a stereo_b wind\n"\
-              f"\n"\
-              f"date: year:int\n"\
-              f"      \tmonth:int\n"\
-              f"      \tday:int\n"\
-              f"objects: list of strings with object ids\n"\
-              f"timeres:int  -  time resolution in hours for positions.\n"\
-              f"         \t24: 1 position every 24 hours\n"\
-              f"         \t1: 1 position for every hour of the day" \
-              f"\n"
-        string2= f"USAGE:\n" \
-                f"----------------------------" \
-                f"\n" \
-                f"objects = ['sun', 'earth', 'venus', 'psp', 'solo']\n" \
-                f"\n" \
-                f"# Generate map\n" \
-                f"solarsystem = hsl.hsl(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)\n" \
-                f"\n" \
-                f"# gives the location of the objects at the specified DATE without orbits or labels.\n" \
-                f"simple_coord_rsun = np.array(solarsystem.locate_simple())\n" \
-                f"\n" \
-                f"# Plotting map of objects\n" \
-                f"figure = solarsystem.plot()\n" \
-                f"\n" \
-                f"# Verbose version of coordinates with orbit, with labels. the last position is the specified date.\n" \
-                f"coord_rsun = np.array(solarsystem.locate())\n"
-        print(string)
-        print(string2)
 
 
 

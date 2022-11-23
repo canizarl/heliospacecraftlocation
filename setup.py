@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import codecs
 import os
 
-VERSION = '0.0.3'
+VERSION = '0.0.5'
 DESCRIPTION = 'Get HEE Coordinates for spacecraft around the Sun'
 LONG_DESCRIPTION = 'A package that allows to get coordinates and plot different spacecraft around the Sun given a certain date.'
 
@@ -19,7 +19,7 @@ setup(
     install_requires=['sunpy', 'astropy'],
     keywords=['python', 'solar', 'nasa', 'esa', 'spacecraft', 'coordinates', 'sun', 'corona', 'parker', 'solar orbiter'],
     classifiers=[
-        "Development Status :: 1 - Planning",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Operating System :: Unix",
