@@ -150,14 +150,23 @@ class hsl:
         return out
 
     def plot(self):
-        # date = self.date
-        # objects = self.objects
-        # orbit = self.orbit
-        # orbitlength = self.orbitlength
-        # timeres = self.timeres
+        date = self.date
+        objects = self.objects
+        orbit = self.orbit
+        orbitlength = self.orbitlength
+        timeres = self.timeres
 
+
+        day = date[2]
+        month = date[1]
+        year = date[0]
+
+
+        if orbitlength > 1:
+            plot_orbit = 1
         locations_v = self.locate()
-
+        r_sun = R_sun.value  # km
+        AU = au.value  # km
 
         fig, ax = plt.subplots()
         ax.set_aspect('equal')
@@ -331,7 +340,7 @@ if __name__ == '__main__':
     if mercury == 1: objects.append("mercury")
     if sun == 1: objects.append("sun")
 
-
+    #objects = ["sun", 'earth', 'venus', 'psp', 'solo']
 
     locations=[]
     # Constants
