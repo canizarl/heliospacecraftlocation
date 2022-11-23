@@ -70,7 +70,10 @@ EXAMPLE:
 
 .. code-block::
     
-    objects = objects = ['sun', 'earth', 'venus', 'psp', 'solo']
+    import heliospacecraftlocation as hsl
+    import numpy as np
+    
+    objects = ['sun', 'earth', 'venus', 'psp', 'solo']
     
     # Generate map
     solarsystem = hsl.hsl(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)
