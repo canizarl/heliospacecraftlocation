@@ -194,7 +194,9 @@ class hsl:
 
 
         if orbitlength > 1:
-            plot_orbit = 1
+            plot_orbit = True
+        else:
+            plot_orbit = False
         locations_v = self.locate()
         r_sun = R_sun.value  # km
         AU = au.value  # km
@@ -217,7 +219,7 @@ class hsl:
             r_m = np.sqrt(mercury_xyz[0][-1] ** 2 + mercury_xyz[1][-1] ** 2)
             circle_m = plt.Circle((0, 0), r_m, color='k', fill=False, linestyle='--', linewidth=1)
             ax.add_artist(circle_m)
-            if plot_orbit == 1:
+            if plot_orbit == True:
                 plt.plot(mercury_xyz[0], mercury_xyz[1], 'k-')
 
         if "venus" in objects:
@@ -227,7 +229,7 @@ class hsl:
             r_v = np.sqrt(venus_xyz[0][-1] ** 2 + venus_xyz[1][-1] ** 2)
             circle_v = plt.Circle((0, 0), r_v, color='k', fill=False, linestyle='--', linewidth=1)
             ax.add_artist(circle_v)
-            if plot_orbit == 1:
+            if plot_orbit == True:
                 plt.plot(venus_xyz[0], venus_xyz[1], 'k-')
 
 
@@ -238,7 +240,7 @@ class hsl:
             r_e = np.sqrt(earth_xyz[0][-1] ** 2 + earth_xyz[1][-1] ** 2)
             circle_e = plt.Circle((0, 0), r_e, color='k', fill=False, linestyle='--', linewidth=1)
             ax.add_artist(circle_e)
-            if plot_orbit == 1:
+            if plot_orbit == True:
                 plt.plot(earth_xyz[0], earth_xyz[1], 'k-')
 
 
@@ -246,34 +248,34 @@ class hsl:
             psp_xyz = locations_v["psp"]
             psplocation = plt.plot(psp_xyz[0][-1], psp_xyz[1][-1], 'ro')
             plt.text(np.array(psp_xyz[0][-1]) + 1, np.array(psp_xyz[1][-1]) + 1, 'PSP')
-            if plot_orbit == 1:
+            if plot_orbit == True:
                 plt.plot(psp_xyz[0], psp_xyz[1], 'r-')
 
         if "solo" in objects:
             solo_xyz = locations_v["solo"]
             sololocation = plt.plot(solo_xyz[0][-1], solo_xyz[1][-1], 'ro')
             plt.text(np.array(solo_xyz[0][-1]) + 1, np.array(solo_xyz[1][-1]) + 1, 'Solar Orbiter')
-            if plot_orbit == 1:
+            if plot_orbit == True:
                 plt.plot(solo_xyz[0], solo_xyz[1], 'r-')
 
         if "stereo_a" in objects:
             stereoa_xyz = locations_v["stereo_a"]
             stereo_a_location = plt.plot(stereoa_xyz[0][-1], stereoa_xyz[1][-1], 'ko')
             plt.text(np.array(stereoa_xyz[0][-1]) + 1, np.array(stereoa_xyz[1][-1]) + 1, 'Stereo A')
-            if plot_orbit == 1:
+            if plot_orbit == True:
                 plt.plot(stereoa_xyz[0], stereoa_xyz[1], 'k-')
         if "stereo_b" in objects:
             stereob_xyz = locations_v["stereo_b"]
             stereo_b_location = plt.plot(stereob_xyz[0][-1], stereob_xyz[1][-1], 'ko')
             plt.text(np.array(stereob_xyz[0][-1]) + 1, np.array(stereob_xyz[1][-1]) + 1, 'Stereo B')
-            if plot_orbit == 1:
+            if plot_orbit == True:
                 plt.plot(stereob_xyz[0], stereob_xyz[1], 'k-')
 
         if "wind" in objects:
             wind_xyz = locations_v["wind"]
             windlocation = plt.plot(wind_xyz[0][-1], wind_xyz[1][-1], 'co')
             plt.text(wind_xyz[0][-1] - 20, wind_xyz[1][-1] + 1, 'wind')
-            if plot_orbit == 1:
+            if plot_orbit == True:
                 plt.plot(wind_xyz[0], wind_xyz[1], 'k-')
 
         lim_plot = AU / r_sun + 15
@@ -373,7 +375,7 @@ if __name__ == '__main__':
     AU = au.value  # km
 
     # Generate map
-    solarsystem = hsl(date=[year, month, day], objects=objects,orbitlength=5, timeres=24)
+    solarsystem = hsl(date=[year, month, day], objects=objects, orbitlength=50, timeres=24)
 
     # gives the location of the objects at the specified DATE without orbits or labels.
     stations_rsun = np.array(solarsystem.locate_simple())
