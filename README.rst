@@ -91,7 +91,7 @@ Bugs & Contribution
 ===================
 
 Please use Github to report bugs, feature requests and submit your code:
-https://github.com/canizarl/heliospacecraftlocation
+https://github.com/canizarl/solarmap
 
 :author: Luis Alberto Canizares
 :date: 2022/11/22
