@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$/../solarmap">
       <excludeFolder url="file://$MODULE_DIR$/../solarmap/venv_pycharm" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (venv_pycharm)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
