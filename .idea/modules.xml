@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Library/CloudStorage/OneDrive-Personal/Work/0_PhD/Projects/BELLA/.idea/BELLA.iml" filepath="$USER_HOME$/Library/CloudStorage/OneDrive-Personal/Work/0_PhD/Projects/BELLA/.idea/BELLA.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/heliospacecraftlocation.iml" filepath="$PROJECT_DIR$/.idea/heliospacecraftlocation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../solarmap/.idea/solarmap.iml" filepath="$PROJECT_DIR$/../solarmap/.idea/solarmap.iml" />
     </modules>
   </component>
 </project>

@@ -1,5 +1,5 @@
 ============
-HelioSpacecraftLocation
+SolarMAP
 ============
 
 .. image:: http://img.shields.io/badge/powered%20by-SunPy-orange.svg?style=flat
@@ -7,7 +7,7 @@ HelioSpacecraftLocation
     :alt: Powered by SunPy Badge
  
     
-heliospacecraftlocation uses SunPy to plot and return coordinates of different spacecraft and planets around the sun give a date. 
+SolarMAP uses SunPy to plot and return coordinates of different spacecraft and planets around the sun give a date.
 
 Features:
 
@@ -16,7 +16,7 @@ Features:
 -   Plots in HEE 
 
 Contributions and comments are welcome using Github at: 
-https://github.com/canizarl/heliospacecraftlocation
+https://github.com/canizarl/solarmap
 
 Please note that project-name requires:
 
@@ -30,15 +30,14 @@ install via pip:
 
 .. code-block::
 
-    pip install heliospacecraftlocation
+    pip install solarmap
 
 
 include in your python script:
 
 .. code-block::
 
-    import heliospacecraftlocation as hsl
-
+    import solarmap
 
 
 
@@ -70,13 +69,13 @@ EXAMPLE:
 
 .. code-block::
     
-    import heliospacecraftlocation as hsl
+    import solarmap
     import numpy as np
     
     objects = ['sun', 'earth', 'venus', 'psp', 'solo']
     
     # Generate map
-    solarsystem = hsl.hsl(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)
+    solarsystem = solarmap.hsl(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)
 
     # gives the location of the objects at the specified DATE without orbits or labels.
     simple_coord_rsun = np.array(solarsystem.locate_simple())
