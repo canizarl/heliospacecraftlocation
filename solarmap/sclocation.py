@@ -13,7 +13,7 @@ from sunpy.coordinates import get_horizons_coord
 
 def help():
     # UPDATE HELP
-    string = f"HELIO SPACECRAFT LOCATION - HSL" \
+    string = f" ---------- SolarMAP ---------- " \
              f"get_sc_coord returns an array with positions of objects in solar sytem\n" \
              f"objects supported: sun mercury venus earth psp solo stereo_a stereo_b wind\n" \
              f"\n" \
