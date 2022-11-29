@@ -18,7 +18,7 @@ Features:
 Contributions and comments are welcome using Github at: 
 https://github.com/canizarl/solarmap
 
-Please note that project-name requires:
+Please note that SolarMAP requires:
 
 - SunPy 
 - Astropy
