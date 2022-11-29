@@ -136,3 +136,4 @@ dmypy.json
 #local files
 *.bashrc
 Legacy Scripts
+updatepackage.sh

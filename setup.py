@@ -16,7 +16,7 @@ setup(
     long_description_content_type="text/markdown",
     long_description=LONG_DESCRIPTION,
     packages=find_packages(),
-    install_requires=['sunpy', 'astropy'],
+    install_requires=['sunpy', 'astropy', 'astroquery'],
     keywords=['python', 'solar', 'nasa', 'esa', 'spacecraft', 'coordinates', 'sun', 'corona', 'parker', 'solar orbiter'],
     classifiers=[
         "Development Status :: 3 - Alpha",
