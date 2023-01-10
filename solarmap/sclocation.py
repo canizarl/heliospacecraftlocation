@@ -408,4 +408,4 @@ if __name__ == '__main__':
     # Verbose version of coordinates with orbit, with labels. the last position is the specified date.
     coordinates = np.array(solarsystem.locate())
 
-
+    #end
