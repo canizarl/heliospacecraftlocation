@@ -73,10 +73,10 @@ EXAMPLE:
     import solarmap
     import numpy as np
     
-    objects = ['sun', 'earth', 'venus', 'psp', 'solo']
-    
+    objects = ['sun', 'mars', 'earth', 'venus', 'psp', 'solo']
+
     # Generate map
-    solarsystem = solarmap.hsl(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)
+    solarsystem = solarmap.get_sc_coord(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)
 
     # gives the location of the objects at the specified DATE without orbits or labels.
     simple_coord_rsun = np.array(solarsystem.locate_simple())
@@ -86,6 +86,7 @@ EXAMPLE:
 
     # Verbose version of coordinates with orbit, with labels. the last position is the specified date.
     coord_rsun = np.array(solarsystem.locate())
+
 
 
 Bugs & Contribution

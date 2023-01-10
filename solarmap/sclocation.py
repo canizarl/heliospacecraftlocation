@@ -28,7 +28,7 @@ def help():
     string2 = f"USAGE:\n" \
               f"----------------------------" \
               f"\n" \
-              f"objects = ['sun', 'earth', 'venus', 'psp', 'solo']\n" \
+              f"objects = ['sun', 'mars', 'earth', 'venus', 'psp', 'solo']\n" \
               f"\n" \
               f"# Generate map\n" \
               f"solarsystem = solarmap.get_sc_coord(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)\n" \
@@ -297,9 +297,10 @@ class get_sc_coord:
                 plt.plot(wind_xyz[0], wind_xyz[1], 'k-')
 
 
-        lim_plot = np.max(np.array(locations_simple)) + 15
+        lim_plot = np.max(np.absolute(locations_simple)) + 15   # automatically selects boundary of map based on outermost object
         # lim_plot = 1.5*AU / r_sun + 15
         ax.set(xlim=(-lim_plot, lim_plot), ylim=(-lim_plot, lim_plot))
+
 
         month_strings = {
             1: 'Jan',
@@ -408,4 +409,4 @@ if __name__ == '__main__':
     # Verbose version of coordinates with orbit, with labels. the last position is the specified date.
     coordinates = np.array(solarsystem.locate())
 
-    #end
+
