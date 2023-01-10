@@ -73,7 +73,7 @@ EXAMPLE:
     import solarmap
     import numpy as np
     
-    objects = ['sun', 'mars', 'earth', 'venus', 'psp', 'solo']
+    objects = ['sun', 'earth', 'venus', 'psp', 'solo']
 
     # Generate map
     solarsystem = solarmap.get_sc_coord(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)
