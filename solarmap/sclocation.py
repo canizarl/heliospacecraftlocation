@@ -46,7 +46,7 @@ def help():
 
 
 class get_sc_coord:
-    def __init__(self, date=[], objects=[""], orbit=0,orbitlength=1, timeres=24):
+    def __init__(self, date=[], objects=[""], orbit=0, orbitlength=1, timeres=24):
         self.date = date
         self.objects = objects
         self.orbit = orbit
@@ -121,6 +121,15 @@ class get_sc_coord:
             earth_xyz = earth_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value*(AU/r_sun)
             locations.append([earth_xyz[0][-1],earth_xyz[1][-1]])
             locations_v["earth"] = earth_xyz
+
+        if "mars" in objects:
+            # Earth location
+            mars_coord = get_horizons_coord("Mars Barycenter", time={'start': starttime,
+                                                                           'stop': endtime,
+                                                                           'step':f"{orbitlength}"}, id_type=None)
+            mars_xyz = mars_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value*(AU/r_sun)
+            locations.append([mars_xyz[0][-1],mars_xyz[1][-1]])
+            locations_v["mars"] = mars_xyz
 
         if "psp" in objects:
             # PSP location
@@ -198,7 +207,7 @@ class get_sc_coord:
             plot_orbit = True
         else:
             plot_orbit = False
-        locations_v = self.locate()
+        locations_simple, locations_v = self.buff_locate()
         r_sun = R_sun.value  # km
         AU = au.value  # km
 
@@ -243,7 +252,15 @@ class get_sc_coord:
             ax.add_artist(circle_e)
             if plot_orbit == True:
                 plt.plot(earth_xyz[0], earth_xyz[1], 'k-')
-
+        if "mars" in objects:
+            mars_xyz = locations_v["mars"]
+            mars_location = plt.plot(mars_xyz[0][-1], mars_xyz[1][-1], 'ro')
+            plt.text(np.array(mars_xyz[0][-1]) + 1, np.array(mars_xyz[1][-1]) + 1, 'Mars')
+            r_m = np.sqrt(mars_xyz[0][-1] ** 2 + mars_xyz[1][-1] ** 2)
+            circle_m = plt.Circle((0, 0), r_m, color='k', fill=False, linestyle='--', linewidth=1)
+            ax.add_artist(circle_m)
+            if plot_orbit == True:
+                plt.plot(mars_xyz[0], mars_xyz[1], 'k-')
 
         if "psp" in objects:
             psp_xyz = locations_v["psp"]
@@ -279,7 +296,9 @@ class get_sc_coord:
             if plot_orbit == True:
                 plt.plot(wind_xyz[0], wind_xyz[1], 'k-')
 
-        lim_plot = AU / r_sun + 15
+
+        lim_plot = np.max(np.array(locations_simple)) + 15
+        # lim_plot = 1.5*AU / r_sun + 15
         ax.set(xlim=(-lim_plot, lim_plot), ylim=(-lim_plot, lim_plot))
 
         month_strings = {
@@ -333,14 +352,15 @@ if __name__ == '__main__':
     else:
         #manual day
         day = 11
-        month = 11
-        year = 2022
+        month = 7
+        year = 2020
 
 
 
 
     # toggle 1 (show)  or 0 (hide) the following objects.
     # Celestial objects
+    mars = 1
     earth = 1   # HEE coordinates, by default at x = 1au y=0
     venus = 1
     mercury = 1
@@ -363,6 +383,7 @@ if __name__ == '__main__':
     if stereo_A == 1: objects.append("stereo_a")
     if stereo_B == 1: objects.append("stereo_b")
     if wind == 1: objects.append("wind")
+    if mars == 1: objects.append("mars")
     if earth == 1: objects.append("earth")
     if venus == 1: objects.append("venus")
     if mercury == 1: objects.append("mercury")

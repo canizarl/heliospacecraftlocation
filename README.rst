@@ -55,6 +55,7 @@ Documentation
         'stereo_a'
         'stereo_b'
         'wind'
+        'mars'
         'earth'
         'venus'
         'mercury'
