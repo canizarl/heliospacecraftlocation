@@ -32,6 +32,11 @@ install via pip:
 
     pip install solarmap
 
+Get the latest version via pip:
+
+.. code-block::
+
+    pip install --upgrade solarmap
 
 include in your python script:
 
