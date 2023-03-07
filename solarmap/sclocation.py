@@ -103,7 +103,7 @@ class get_sc_coord:
                                                                                'step':f"{orbitlength}"}, id_type=None)
                 mercury_xyz = mercury_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
                 locations.append([mercury_xyz[0][-1], mercury_xyz[1][-1]])
-                locations_v["mercury"] = mercury_xyz
+                locations_v["mercury"] = mercury_xyz[:,1:]
             if "venus" == object:
                 # VENUS POSITION
                 venus_coord = get_horizons_coord("Venus Barycenter", time={'start': starttime,
@@ -111,7 +111,7 @@ class get_sc_coord:
                                                                                'step':f"{orbitlength}"}, id_type=None)
                 venus_xyz = venus_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
                 locations.append([venus_xyz[0][-1],venus_xyz[1][-1]])
-                locations_v["venus"] = venus_xyz
+                locations_v["venus"] = venus_xyz[:,1:]
 
 
             if "earth" == object:
@@ -121,7 +121,7 @@ class get_sc_coord:
                                                                                'step':f"{orbitlength}"}, id_type=None)
                 earth_xyz = earth_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value*(AU/r_sun)
                 locations.append([earth_xyz[0][-1],earth_xyz[1][-1]])
-                locations_v["earth"] = earth_xyz
+                locations_v["earth"] = earth_xyz[:,1:]
 
             if "mars" == object:
                 # Earth location
@@ -130,7 +130,7 @@ class get_sc_coord:
                                                                                'step':f"{orbitlength}"}, id_type=None)
                 mars_xyz = mars_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value*(AU/r_sun)
                 locations.append([mars_xyz[0][-1],mars_xyz[1][-1]])
-                locations_v["mars"] = mars_xyz
+                locations_v["mars"] = mars_xyz[:,1:]
 
             if "psp" == object:
                 # PSP location
@@ -139,7 +139,7 @@ class get_sc_coord:
                                                             'step':f"{orbitlength}"}, id_type=None)
                 psp_xyz = psp_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
                 locations.append([psp_xyz[0][-1],psp_xyz[1][-1]])
-                locations_v["psp"] = psp_xyz
+                locations_v["psp"] = psp_xyz[:,1:]
 
 
             if "solo" == object:
@@ -149,7 +149,7 @@ class get_sc_coord:
                                                               'step':f"{orbitlength}"}, id_type=None)
                 solo_xyz = solo_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
                 locations.append([solo_xyz[0][-1],solo_xyz[1][-1]])
-                locations_v["solo"] = solo_xyz
+                locations_v["solo"] = solo_xyz[:,1:]
 
             if "stereo_a"== object:
                 # STEREO A POSITION
@@ -158,7 +158,7 @@ class get_sc_coord:
                                                                      'step':f"{orbitlength}"}, id_type=None)
                 stereoa_xyz = stereoa_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
                 locations.append([stereoa_xyz[0][-1],stereoa_xyz[1][-1]])
-                locations_v["stereo_a"] = stereoa_xyz
+                locations_v["stereo_a"] = stereoa_xyz[:,1:]
 
                 ##
 
@@ -169,7 +169,7 @@ class get_sc_coord:
                                                                      'step':f"{orbitlength}"}, id_type=None)
                 stereob_xyz = stereob_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
                 locations.append([stereob_xyz[0][-1],stereob_xyz[1][-1]])
-                locations_v["stereo_b"] = stereob_xyz
+                locations_v["stereo_b"] = stereob_xyz[:,1:]
 
                 ##
 
@@ -180,7 +180,7 @@ class get_sc_coord:
                                                               'step':f"{orbitlength}"}, id_type=None)
                 wind_xyz = wind_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
                 locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
-                locations_v["wind"] = wind_xyz
+                locations_v["wind"] = wind_xyz[:,1:]
 
         return locations, locations_v
 
