@@ -90,7 +90,7 @@ EXAMPLE:
     figure = solarsystem.plot()
 
     # Verbose version of coordinates with orbit, with labels. the last position is the specified date.
-    coord_rsun = np.array(solarsystem.locate())
+    coord_rsun = solarsystem.locate()
 
 
 

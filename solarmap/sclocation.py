@@ -28,6 +28,7 @@ def help():
     string2 = f"USAGE:\n" \
               f"----------------------------" \
               f"\n" \
+              f"objects = ['psp', 'solo', 'wind', 'stereo_a']\n" \
               f"objects = ['sun', 'mars', 'earth', 'venus', 'psp', 'solo']\n" \
               f"\n" \
               f"# Generate map\n" \
@@ -40,7 +41,7 @@ def help():
               f"figure = solarsystem.plot()\n" \
               f"\n" \
               f"# Verbose version of coordinates with orbit, with labels. the last position is the specified date.\n" \
-              f"coord_rsun = np.array(solarsystem.locate())\n"
+              f"coord_rsun = solarsystem.locate()\n"
     print(string)
     print(string2)
 
@@ -87,99 +88,99 @@ class get_sc_coord:
         # while starttime < endtime:
         #     times.append(starttime)
         #     starttime += timedelta(hours=timeres)
+        for object in objects:
+            if "sun" == object:
+                sun_x = 0
+                sun_y = 0
+                sunz_z =0
+                locations.append([sun_x,sun_y])
+                locations_v["sun"] = [sun_x,sun_y, sunz_z]
 
-        if "sun" in objects:
-            sun_x = 0
-            sun_y = 0
-            sunz_z =0
-            locations.append([sun_x,sun_y])
-            locations_v["sun"] = [sun_x,sun_y, sunz_z]
-
-        if "mercury" in objects:
-            #Mercury location
-            mercury_coord = get_horizons_coord("Mercury Barycenter", time={'start': starttime,
-                                                                           'stop': endtime,
-                                                                           'step':f"{orbitlength}"}, id_type=None)
-            mercury_xyz = mercury_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
-            locations.append([mercury_xyz[0][-1], mercury_xyz[1][-1]])
-            locations_v["mercury"] = mercury_xyz
-        if "venus" in objects:
-            # VENUS POSITION
-            venus_coord = get_horizons_coord("Venus Barycenter", time={'start': starttime,
-                                                                           'stop': endtime,
-                                                                           'step':f"{orbitlength}"}, id_type=None)
-            venus_xyz = venus_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
-            locations.append([venus_xyz[0][-1],venus_xyz[1][-1]])
-            locations_v["venus"] = venus_xyz
-
-
-        if "earth" in objects:
-            # Earth location
-            earth_coord = get_horizons_coord("Earth-Moon Barycenter", time={'start': starttime,
-                                                                           'stop': endtime,
-                                                                           'step':f"{orbitlength}"}, id_type=None)
-            earth_xyz = earth_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value*(AU/r_sun)
-            locations.append([earth_xyz[0][-1],earth_xyz[1][-1]])
-            locations_v["earth"] = earth_xyz
-
-        if "mars" in objects:
-            # Earth location
-            mars_coord = get_horizons_coord("Mars Barycenter", time={'start': starttime,
-                                                                           'stop': endtime,
-                                                                           'step':f"{orbitlength}"}, id_type=None)
-            mars_xyz = mars_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value*(AU/r_sun)
-            locations.append([mars_xyz[0][-1],mars_xyz[1][-1]])
-            locations_v["mars"] = mars_xyz
-
-        if "psp" in objects:
-            # PSP location
-            psp_coord = get_horizons_coord("PSP", time={'start': starttime,
-                                                        'stop': endtime,
-                                                        'step':f"{orbitlength}"}, id_type=None)
-            psp_xyz = psp_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
-            locations.append([psp_xyz[0][-1],psp_xyz[1][-1]])
-            locations_v["psp"] = psp_xyz
+            if "mercury" == object:
+                #Mercury location
+                mercury_coord = get_horizons_coord("Mercury Barycenter", time={'start': starttime,
+                                                                               'stop': endtime,
+                                                                               'step':f"{orbitlength}"}, id_type=None)
+                mercury_xyz = mercury_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([mercury_xyz[0][-1], mercury_xyz[1][-1]])
+                locations_v["mercury"] = mercury_xyz
+            if "venus" == object:
+                # VENUS POSITION
+                venus_coord = get_horizons_coord("Venus Barycenter", time={'start': starttime,
+                                                                               'stop': endtime,
+                                                                               'step':f"{orbitlength}"}, id_type=None)
+                venus_xyz = venus_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([venus_xyz[0][-1],venus_xyz[1][-1]])
+                locations_v["venus"] = venus_xyz
 
 
-        if "solo" in objects:
-            # 2020-FEB-10 04:56:58.8550
-            solo_coord = get_horizons_coord("SOLO", time={'start': starttime,
-                                                          'stop': endtime,
-                                                          'step':f"{orbitlength}"}, id_type=None)
-            solo_xyz = solo_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
-            locations.append([solo_xyz[0][-1],solo_xyz[1][-1]])
-            locations_v["solo"] = solo_xyz
+            if "earth" == object:
+                # Earth location
+                earth_coord = get_horizons_coord("Earth-Moon Barycenter", time={'start': starttime,
+                                                                               'stop': endtime,
+                                                                               'step':f"{orbitlength}"}, id_type=None)
+                earth_xyz = earth_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value*(AU/r_sun)
+                locations.append([earth_xyz[0][-1],earth_xyz[1][-1]])
+                locations_v["earth"] = earth_xyz
 
-        if "stereo_a"in objects:
-            # STEREO A POSITION
-            stereoa_coord = get_horizons_coord("STEREO-A", time={'start': starttime,
-                                                                 'stop': endtime,
-                                                                 'step':f"{orbitlength}"}, id_type=None)
-            stereoa_xyz = stereoa_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
-            locations.append([stereoa_xyz[0][-1],stereoa_xyz[1][-1]])
-            locations_v["stereo_a"] = stereoa_xyz
+            if "mars" == object:
+                # Earth location
+                mars_coord = get_horizons_coord("Mars Barycenter", time={'start': starttime,
+                                                                               'stop': endtime,
+                                                                               'step':f"{orbitlength}"}, id_type=None)
+                mars_xyz = mars_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value*(AU/r_sun)
+                locations.append([mars_xyz[0][-1],mars_xyz[1][-1]])
+                locations_v["mars"] = mars_xyz
 
-            ##
+            if "psp" == object:
+                # PSP location
+                psp_coord = get_horizons_coord("PSP", time={'start': starttime,
+                                                            'stop': endtime,
+                                                            'step':f"{orbitlength}"}, id_type=None)
+                psp_xyz = psp_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([psp_xyz[0][-1],psp_xyz[1][-1]])
+                locations_v["psp"] = psp_xyz
 
-        if "stereo_b" in objects:
-            # STEREO B POSITION
-            stereob_coord = get_horizons_coord("STEREO-B", time={'start': starttime,
-                                                                 'stop': endtime,
-                                                                 'step':f"{orbitlength}"}, id_type=None)
-            stereob_xyz = stereob_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
-            locations.append([stereob_xyz[0][-1],stereob_xyz[1][-1]])
-            locations_v["stereo_b"] = stereob_xyz
 
-            ##
+            if "solo" == object:
+                # 2020-FEB-10 04:56:58.8550
+                solo_coord = get_horizons_coord("SOLO", time={'start': starttime,
+                                                              'stop': endtime,
+                                                              'step':f"{orbitlength}"}, id_type=None)
+                solo_xyz = solo_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([solo_xyz[0][-1],solo_xyz[1][-1]])
+                locations_v["solo"] = solo_xyz
 
-        if "wind" in objects:
-            # wind location is in Sun - Earth L1
-            wind_coord = get_horizons_coord("WIND", time={'start': starttime,
-                                                          'stop': endtime,
-                                                          'step':f"{orbitlength}"}, id_type=None)
-            wind_xyz = wind_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
-            locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
-            locations_v["wind"] = wind_xyz
+            if "stereo_a"== object:
+                # STEREO A POSITION
+                stereoa_coord = get_horizons_coord("STEREO-A", time={'start': starttime,
+                                                                     'stop': endtime,
+                                                                     'step':f"{orbitlength}"}, id_type=None)
+                stereoa_xyz = stereoa_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([stereoa_xyz[0][-1],stereoa_xyz[1][-1]])
+                locations_v["stereo_a"] = stereoa_xyz
+
+                ##
+
+            if "stereo_b" == object:
+                # STEREO B POSITION
+                stereob_coord = get_horizons_coord("STEREO-B", time={'start': starttime,
+                                                                     'stop': endtime,
+                                                                     'step':f"{orbitlength}"}, id_type=None)
+                stereob_xyz = stereob_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([stereob_xyz[0][-1],stereob_xyz[1][-1]])
+                locations_v["stereo_b"] = stereob_xyz
+
+                ##
+
+            if "wind" == object:
+                # wind location is in Sun - Earth L1
+                wind_coord = get_horizons_coord("WIND", time={'start': starttime,
+                                                              'stop': endtime,
+                                                              'step':f"{orbitlength}"}, id_type=None)
+                wind_xyz = wind_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
+                locations_v["wind"] = wind_xyz
 
         return locations, locations_v
 
@@ -407,6 +408,6 @@ if __name__ == '__main__':
     figure = solarsystem.plot()
 
     # Verbose version of coordinates with orbit, with labels. the last position is the specified date.
-    coordinates = np.array(solarsystem.locate())
+    coordinates = solarsystem.locate()
 
 
