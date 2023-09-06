@@ -28,6 +28,7 @@ def help():
     string2 = f"USAGE:\n" \
               f"----------------------------" \
               f"\n" \
+              f"# Suported Objects: sun, mercury, venus, earth, mars, psp, solo, bepicolombo, stereo_a, stereo_b, wind\n" \
               f"objects = ['psp', 'solo', 'wind', 'stereo_a']\n" \
               f"objects = ['sun', 'mars', 'earth', 'venus', 'psp', 'solo']\n" \
               f"\n" \
