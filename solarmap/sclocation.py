@@ -182,6 +182,16 @@ class get_sc_coord:
                 locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
                 locations_v["wind"] = wind_xyz[:,1:]
 
+            if "bepicolombo" == object:
+                # wind location is in Sun - Earth L1
+                bepi_coord = get_horizons_coord("BepiColombo", time={'start': starttime,
+                                                              'stop': endtime,
+                                                              'step':f"{orbitlength}"}, id_type=None)
+                bepi_xyz = bepi_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([bepi_xyz[0][-1],bepi_xyz[1][-1]])
+                locations_v["bepicolombo"] = bepi_xyz[:,1:]
+
+
         return locations, locations_v
 
     def locate_simple(self):
@@ -289,7 +299,12 @@ class get_sc_coord:
             plt.text(np.array(stereob_xyz[0][-1]) + 1, np.array(stereob_xyz[1][-1]) + 1, 'Stereo B')
             if plot_orbit == True:
                 plt.plot(stereob_xyz[0], stereob_xyz[1], 'k-')
-
+        if "bepicolombo" in objects:
+            bepi_xyz = locations_v["bepicolombo"]
+            bepi_location = plt.plot(bepi_xyz[0][-1], bepi_xyz[1][-1], 'ko')
+            plt.text(np.array(bepi_xyz[0][-1]) + 1, np.array(bepi_xyz[1][-1]) + 1, 'BepiColombo')
+            if plot_orbit == True:
+                plt.plot(bepi_xyz[0], bepi_xyz[1], 'k-')
         if "wind" in objects:
             wind_xyz = locations_v["wind"]
             windlocation = plt.plot(wind_xyz[0][-1], wind_xyz[1][-1], 'co')
@@ -375,7 +390,7 @@ if __name__ == '__main__':
     stereo_A = 1
     stereo_B = 1   # note: Spacecraft Not operational since 01/10/2014
     wind = 1
-
+    bepicolombo = 1
     # plot orbits? 1=yes 0=no
     plot_orbit = 1
 
@@ -390,7 +405,7 @@ if __name__ == '__main__':
     if venus == 1: objects.append("venus")
     if mercury == 1: objects.append("mercury")
     if sun == 1: objects.append("sun")
-
+    if bepicolombo==1:objects.append("bepicolombo")
     #objects = ["sun", 'earth', 'venus', 'psp', 'solo']
 
     locations=[]

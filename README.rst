@@ -57,6 +57,7 @@ Documentation
     Supported objects:
         'psp'
         'solo'
+        'bepicolombo'
         'stereo_a'
         'stereo_b'
         'wind'
@@ -65,6 +66,7 @@ Documentation
         'venus'
         'mercury'
         'sun'
+
 
 
     
