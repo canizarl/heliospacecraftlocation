@@ -56,6 +56,7 @@ Documentation
     To find all supported planets and spacecraft:
 
     .. code-block:: python
+
         ids = solarmap.get_HEE_coord.show_spacecraft_ids(get_HEE_coord)
     
 
