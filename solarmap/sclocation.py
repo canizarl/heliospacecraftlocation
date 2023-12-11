@@ -43,15 +43,18 @@ def help():
     string2 = f"USAGE:\n" \
               f"----------------------------" \
               f"\n" \
-              f"# Show suported spacecraft: run: solarmap.get_HEE_coord.show_spacecraft_ids(solarmap.get_HEE_coord) \n" \
+              f"# Show suported spacecraft: \n " \
+              f"# run: \n " \
+              f"solarmap.get_HEE_coord.show_spacecraft_ids(solarmap.get_HEE_coord) \n" \
               f"" \
-              f"# Example: " \
+              f"# Example: \n" \
               f"objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla']\n" \
               f"\n" \
               f"# Generate map\n" \
-              f"solarsystem = solarmap.get_sc_coord(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)\n" \
+              f"solarsystem = solarmap.get_sc_coord(date=[2023, 6, 26], objects=objects,orbitlength=100, timeres=24)\n" \
               f"\n" \
               f"# gives the location of the objects at the specified DATE without orbits or labels.\n" \
+              f"import numpy as np\n" \
               f"simple_coord_rsun = np.array(solarsystem.locate_simple())\n" \
               f"\n" \
               f"# Plotting map of objects\n" \
@@ -75,7 +78,6 @@ class get_sc_coord:
             self.orbitlength = 1
 
     def buff_locate(self):
-        print("WARNING: get_sc_coord soon to be deprecated. Please use get_HEE_coord")
         date = self.date
         objects = self.objects
         orbit = self.orbit
