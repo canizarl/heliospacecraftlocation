@@ -63,7 +63,6 @@ def help():
     print(string2)
 
 class get_sc_coord:
-    print("WARNING: get_sc_coord soon to be deprecated. Please use get_HEE_coord")
     def __init__(self, date=[], objects=[""], orbit=0, orbitlength=1, timeres=24):
         self.date = date
         self.objects = objects
@@ -76,6 +75,7 @@ class get_sc_coord:
             self.orbitlength = 1
 
     def buff_locate(self):
+        print("WARNING: get_sc_coord soon to be deprecated. Please use get_HEE_coord")
         date = self.date
         objects = self.objects
         orbit = self.orbit
