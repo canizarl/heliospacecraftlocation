@@ -43,15 +43,15 @@ def help():
     string2 = f"USAGE:\n" \
               f"----------------------------" \
               f"\n" \
-              f"# Show suported spacecraft: \n " \
-              f"# run: \n " \
+              f"# Show suported spacecraft: \n" \
+              f"# run: \n" \
               f"solarmap.get_HEE_coord.show_spacecraft_ids(solarmap.get_HEE_coord) \n" \
               f"" \
               f"# Example: \n" \
               f"objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla']\n" \
               f"\n" \
               f"# Generate map\n" \
-              f"solarsystem = solarmap.get_sc_coord(date=[2023, 6, 26], objects=objects,orbitlength=100, timeres=24)\n" \
+              f"solarsystem = solarmap.get_HEE_coord(date=[2023, 6, 26], objects=objects,orbitlength=100, timeres=24)\n" \
               f"\n" \
               f"# gives the location of the objects at the specified DATE without orbits or labels.\n" \
               f"import numpy as np\n" \
@@ -571,6 +571,8 @@ class get_HEE_coord:
                 ax.add_patch(circle)
             else:
                 color_marker = 'k'
+            if "tesla" in lowercase_input:
+                color_marker = "#D73832"
 
             objlocation = plt.plot(obj_xyz[0][-1],obj_xyz[1][-1], markerfacecolor=color_marker,markeredgecolor=color_marker, marker='o')
             if "barycenter" in obj.capitalize():
@@ -690,13 +692,13 @@ if __name__ == '__main__':
         #manual day
         day = 11
         month = 7
-        year = 2012
+        year = 2022
 
     # plot orbits? 1=yes 0=no
     plot_orbit = 1
 
     objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla']
-    objects = ['sun',  'mercury', 'venus', 'Earth', 'wind', 'stereo-a', 'stereo-b']
+    # objects = ['sun',  'mercury', 'venus', 'Earth', 'wind', 'stereo-a', 'stereo-b']
 
     locations=[]
     # Constants
