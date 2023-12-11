@@ -53,12 +53,10 @@ Configuration
 
 Documentation
 =============
+    To find all supported planets and spacecraft:
 
-    Supported Spacecraft:
-        https://ssd.jpl.nasa.gov/api/horizons.api?format=text&EPHEM_TYPE=VECTORS&OUT_UNITS=AU-D&COMMAND=%22spacecraft%22&CENTER=%27500%4010%27&CSV_FORMAT=%22YES%22&REF_PLANE=ECLIPTIC&REF_SYSTEM=ICRF&TP_TYPE=ABSOLUTE&VEC_LABELS=YES&VEC_CORR=%22NONE%22&VEC_DELTA_T=NO&OBJ_DATA=YES&TLIST=2460287.169281204
-
-    Supports all planets
-
+    .. code-block:: python
+        ids = solarmap.get_HEE_coord.show_spacecraft_ids(get_HEE_coord)
     
 
 Usage
