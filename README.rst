@@ -57,7 +57,7 @@ Documentation
 
     .. code-block:: python
 
-        ids = solarmap.get_HEE_coord.show_spacecraft_ids(get_HEE_coord)
+        ids = solarmap.get_HEE_coord.show_spacecraft_ids(solarmap.get_HEE_coord)
     
 
 Usage
