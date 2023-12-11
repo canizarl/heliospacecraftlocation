@@ -11,11 +11,26 @@ import sys
 from sunpy.coordinates import get_horizons_coord
 
 
+def cart2pol(x, y):
+    # Calculate radius (r)
+    r = np.sqrt(x ** 2 + y ** 2)
+
+    # Calculate angle (theta) in radians
+    theta = np.arctan2(y, x)
+
+    # Convert angle to degrees if needed
+    theta_degrees = np.degrees(theta)
+
+    return r, theta_degrees
+
 def help():
     # UPDATE HELP
     string = f" ---------- SolarMAP ---------- " \
-             f"get_sc_coord returns an array with positions of objects in solar sytem\n" \
-             f"objects supported: sun mercury venus earth psp solo stereo_a stereo_b wind\n" \
+             f"SolarMap generates a map of the solarsystem and returns HEE coordinates\n" \
+             f"SolarMap simplifies the usage of  sunpy.coordinates import get_horizons_coord\n" \
+             f"get_HEE_coord returns an array with positions of objects in solar sytem in HEE\n" \
+             f"\n"\
+             f"" \
              f"\n" \
              f"date: year:int\n" \
              f"      \tmonth:int\n" \
@@ -28,9 +43,10 @@ def help():
     string2 = f"USAGE:\n" \
               f"----------------------------" \
               f"\n" \
-              f"# Suported Objects: sun, mercury, venus, earth, mars, psp, solo, bepicolombo, stereo_a, stereo_b, wind\n" \
-              f"objects = ['psp', 'solo', 'wind', 'stereo_a']\n" \
-              f"objects = ['sun', 'mars', 'earth', 'venus', 'psp', 'solo']\n" \
+              f"# Show suported spacecraft: run: get_HEE_coord.show_spacecraft_ids(get_HEE_coord) \n" \
+              f"find supported objects:" \
+              f"from sunpy.coordinates import get_horizons_coord " \
+              f"objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla']\n" \
               f"\n" \
               f"# Generate map\n" \
               f"solarsystem = solarmap.get_sc_coord(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)\n" \
@@ -46,8 +62,8 @@ def help():
     print(string)
     print(string2)
 
-
 class get_sc_coord:
+    print("WARNING: get_sc_coord soon to be deprecated. Please use get_HEE_coord")
     def __init__(self, date=[], objects=[""], orbit=0, orbitlength=1, timeres=24):
         self.date = date
         self.objects = objects
@@ -58,9 +74,6 @@ class get_sc_coord:
         if orbitlength < 1:
             print(f"WARNING: orbitlength must be set to 1 or higher. Corrected")
             self.orbitlength = 1
-
-
-
 
     def buff_locate(self):
         date = self.date
@@ -93,7 +106,7 @@ class get_sc_coord:
             if "sun" == object:
                 sun_x = 0
                 sun_y = 0
-                sunz_z =0
+                sunz_z = 0
                 locations.append([sun_x,sun_y])
                 locations_v["sun"] = [sun_x,sun_y, sunz_z]
 
@@ -175,13 +188,41 @@ class get_sc_coord:
                 ##
 
             if "wind" == object:
-                # wind location is in Sun - Earth L1
-                wind_coord = get_horizons_coord("WIND", time={'start': starttime,
+                ephemeris_available = dt(2019,10,8,0,1,10)
+                if starttime >= ephemeris_available:
+                    # wind location is in Sun - Earth L1
+                    wind_coord = get_horizons_coord("Wind (spacecraft)", time={'start': starttime,
+                                                                  'stop': endtime,
+                                                                  'step':f"{orbitlength}"}, id_type=None)
+                    wind_xyz = wind_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                    locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
+                    locations_v["wind"] = wind_xyz[:,1:]
+                else:
+                    # SOHO and WIND are both located near L1
+                    print("WARNING: No ephemeris for target Wind (spacecraft) prior to A.D. 2019-OCT-08 00:01:09.1823 TD")
+                    print("Assuming L1.")
+                    wind_coord = get_horizons_coord("SEMB-L1", time={'start': starttime,
+                                                                  'stop': endtime,
+                                                                  'step':f"{orbitlength}"}, id_type=None)
+                    wind_xyz = wind_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                    locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
+                    locations_v["wind"] = wind_xyz[:,1:]
+
+            if "soho" == object:
+                soho_coord = get_horizons_coord("soho", time={'start': starttime,
                                                               'stop': endtime,
-                                                              'step':f"{orbitlength}"}, id_type=None)
-                wind_xyz = wind_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
-                locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
-                locations_v["wind"] = wind_xyz[:,1:]
+                                                              'step': f"{orbitlength}"}, id_type=None)
+                soho_xyz = soho_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([soho_xyz[0][-1], soho_xyz[1][-1]])
+                locations_v["soho"] = soho_xyz[:, 1:]
+
+            if "ace" == object:
+                ace_coord = get_horizons_coord("ACE (spacecraft)", time={'start': starttime,
+                                                              'stop': endtime,
+                                                              'step': f"{orbitlength}"}, id_type=None)
+                ace_xyz = ace_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([ace_xyz[0][-1], ace_xyz[1][-1]])
+                locations_v["ace"] = ace_xyz[:, 1:]
 
             if "bepicolombo" == object:
                 # wind location is in Sun - Earth L1
@@ -191,7 +232,6 @@ class get_sc_coord:
                 bepi_xyz = bepi_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
                 locations.append([bepi_xyz[0][-1],bepi_xyz[1][-1]])
                 locations_v["bepicolombo"] = bepi_xyz[:,1:]
-
 
         return locations, locations_v
 
@@ -343,16 +383,257 @@ class get_sc_coord:
 
 
 
+class get_HEE_coord:
+    def __init__(self, date=[], objects=[""], orbit=0, orbitlength=1, timeres=24):
+        self.date = date
+        self.objects = objects
+        self.orbit = orbit
+        self.orbitlength = orbitlength
+        self.timeres = timeres        # in hours
+        if orbitlength < 1:
+            print(f"WARNING: orbitlength must be set to 1 or higher. Corrected")
+            self.orbitlength = 1
+
+    def planet_ids(self, object=""):
+        # simplifying planet names
+        if object == "mercury": object = "Mercury Barycenter"
+        elif object == "venus": object = "Venus Barycenter"
+        elif object == "earth": object = "Earth-Moon Barycenter"  #
+        elif object == "mars": object = "Mars Barycenter"  #
+        elif object == "jupiter": object = "Jupiter Barycenter"  #
+        elif object == "saturn": object = "Saturn Barycenter"  #
+        elif object == "uranus": object = "Uranus Barycenter"  #
+        elif object == "neptune": object = "Neptune Barycenter"  #
+        elif object == "pluto": object = "Pluto Barycenter"  #
+        elif object =="":
+            print("mercury, venus, earth, mars, saturn, uranus, neptune, pluto ")
+        else:
+            return object
+        return object
+
+    def simple_planet_ids(self, object=""):
+        # simplifying planet names
+        if object == "Mercury Barycenter": object = "mercury"
+        elif object == "Venus Barycenter" : object = "venus"
+        elif object == "Earth-Moon Barycenter" : object =  "earth"  #
+        elif object == "Mars Barycenter": object = "mars"   #
+        elif object == "Jupiter Barycenter"  : object ="jupiter" #
+        elif object == "Saturn Barycenter"  : object = "saturn" #
+        elif object == "Uranus Barycenter" : object = "uranus" #
+        elif object == "Neptune Barycenter" : object ="neptune" #
+        elif object == "Pluto Barycenter"   : object ="pluto"#
+        else:
+            return object
+        return object
+
+    def buff_locate(self):
+        date = self.date
+        objects = self.objects
+        orbit = self.orbit
+        orbitlength = self.orbitlength
+        timeres = self.timeres
+
+        print(f"Objects: {objects}")
+        locations = []
+        locations_v = {}
+
+        # Constants
+        r_sun = R_sun.value  # km
+        AU = au.value  # km
+
+        day = date[2]
+        month = date[1]
+        year = date[0]
+
+        targetday = dt(year, month, day)
+
+        starttime = targetday - timedelta(days=orbitlength)
+        endtime = targetday
+        # times = []
+        # while starttime < endtime:
+        #     times.append(starttime)
+        #     starttime += timedelta(hours=timeres)
+
+        for object in objects:
+            object = self.planet_ids(object)
+            if "wind" == object:
+                ephemeris_available = dt(2019,10,8,0,1,10)
+                if starttime >= ephemeris_available:
+                    # wind location is in Sun - Earth L1
+                    wind_coord = get_horizons_coord("Wind (spacecraft)", time={'start': starttime,
+                                                                  'stop': endtime,
+                                                                  'step':f"{orbitlength}"}, id_type=None)
+                    wind_xyz = wind_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                    locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
+                    locations_v["wind"] = wind_xyz[:,1:]
+                else:
+                    # SOHO and WIND are both located near L1
+                    print("WARNING: No ephemeris for target Wind (spacecraft) prior to A.D. 2019-OCT-08 00:01:09.1823 TD")
+                    print("Assuming L1.")
+                    wind_coord = get_horizons_coord("SEMB-L1", time={'start': starttime,
+                                                                  'stop': endtime,
+                                                                  'step':f"{orbitlength}"}, id_type=None)
+                    wind_xyz = wind_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                    locations.append([wind_xyz[0][-1],wind_xyz[1][-1]])
+                    locations_v["wind"] = wind_xyz[:,1:]
+
+            else:
+                # wind location is in Sun - Earth L1
+                object_coord = get_horizons_coord(object, time={'start': starttime,
+                                                              'stop': endtime,
+                                                              'step':f"{orbitlength}"}, id_type=None)
+                object_xyz = object_coord.heliocentricearthecliptic.cartesian.get_xyz()[:].value * (AU / r_sun)
+                locations.append([object_xyz[0][-1],object_xyz[1][-1]])
+                locations_v[object] = object_xyz[:,1:]
 
 
+        return locations, locations_v
+
+    def locate_simple(self):
+        out, _ = self.buff_locate()
+        return out
+    def locate(self):
+        _, out = self.buff_locate()
+        return out
+
+    def plot(self):
+        date = self.date
+        objects = self.objects
+        orbit = self.orbit
+        orbitlength = self.orbitlength
+        timeres = self.timeres
 
 
+        day = date[2]
+        month = date[1]
+        year = date[0]
 
 
+        if orbitlength > 1:
+            plot_orbit = True
+        else:
+            plot_orbit = False
+        locations_simple, locations_v = self.buff_locate()
+        r_sun = R_sun.value  # km
+        AU = au.value  # km
+
+        fig, ax = plt.subplots()
+        ax.set_aspect('equal')
+        lim_plot = AU / r_sun + 15
+        ax.set(xlim=(-lim_plot, lim_plot), ylim=(-lim_plot, lim_plot))
+
+        for obj in objects:
+            obj = self.planet_ids(obj)
+            lowercase_input = obj.lower()
+            obj_xyz = locations_v[obj]
+            center = (0, 0)
+            radius, _ = cart2pol(obj_xyz[0][-1], obj_xyz[1][-1])
+            # Check if the lowercase target word appears in the lowercase input string
 
 
+            if "spacecraft" in lowercase_input:
+                color_marker = 'k'
+            elif "sun" in lowercase_input:
+                color_marker = 'y'
+            elif "mercury" in lowercase_input:
+                color_marker = 'grey'
+                circle = plt.Circle(center, radius, edgecolor='grey', facecolor='none', linestyle='dashed')
+                ax.add_patch(circle)
+            elif "venus" in lowercase_input:
+                color_marker = 'y'
+                circle = plt.Circle(center, radius, edgecolor='grey', facecolor='none', linestyle='dashed')
+                ax.add_patch(circle)
+            elif "earth" in lowercase_input:
+                color_marker = 'b'
+                circle = plt.Circle(center, radius, edgecolor='grey', facecolor='none', linestyle='dashed')
+                ax.add_patch(circle)
+            elif "mars" in lowercase_input:
+                color_marker = 'r'
+                circle = plt.Circle(center, radius, edgecolor='grey', facecolor='none', linestyle='dashed')
+                ax.add_patch(circle)
+            elif "jupiter" in lowercase_input:
+                color_marker = 'r'
+                circle = plt.Circle(center, radius, edgecolor='grey', facecolor='none', linestyle='dashed')
+                ax.add_patch(circle)
+            elif "saturn" in lowercase_input:
+                color_marker = 'y'
+                circle = plt.Circle(center, radius, edgecolor='grey', facecolor='none', linestyle='dashed')
+                ax.add_patch(circle)
+            elif "uranus" in lowercase_input:
+                color_marker = 'c'
+                circle = plt.Circle(center, radius, edgecolor='grey', facecolor='none', linestyle='dashed')
+                ax.add_patch(circle)
+            elif "neptune" in lowercase_input:
+                color_marker = 'b'
+                circle = plt.Circle(center, radius, edgecolor='grey', facecolor='none', linestyle='dashed')
+                ax.add_patch(circle)
+            else:
+                color_marker = 'k'
+
+            objlocation = plt.plot(obj_xyz[0][-1],obj_xyz[1][-1], markerfacecolor=color_marker,markeredgecolor=color_marker, marker='o')
+            if "barycenter" in obj.capitalize():
+                label = obj.capitalize().replace(" barycenter", "")
+            else:
+                label = obj.capitalize()
+            if "-moon" in label.capitalize():
+                label = label.capitalize().replace("-moon", "")
+
+            if "Wind" in label:
+                plt.text(np.array(obj_xyz[0][-1]) - 30, np.array(obj_xyz[1][-1]) + 10, f'{label}')
+            else:
+                plt.text(np.array(obj_xyz[0][-1]) + 10, np.array(obj_xyz[1][-1]) + 10, f'{label}')
+
+            if plot_orbit == True:
+                plt.plot(obj_xyz[0], obj_xyz[1], color=color_marker, ls='-')
+
+        locations_simple = np.array(locations_simple)
+
+        R, _ = cart2pol(locations_simple[:, 0], locations_simple[:, 1])
+        lim_plot = np.max(R) + 20
+        ax.set(xlim=(-lim_plot, lim_plot), ylim=(-lim_plot, lim_plot))
 
 
+        month_strings = {
+            1: 'Jan',
+            2: 'Feb',
+            3: 'Mar',
+            4: 'Apr',
+            5: 'May',
+            6: 'Jun',
+            7: 'Jul',
+            8: 'Aug',
+            9: 'Sep',
+            10: 'Oct',
+            11: 'Nov',
+            12: 'Dec'}
+
+        ax.set_title(f'Spacecraft Coordinates - {day} / {month_strings[month]} / {year}', fontsize=18)
+        ax.set_xlabel('HEE - X / $R_{\odot}$', fontsize=14)
+        ax.set_ylabel('HEE - Y / $R_{\odot}$', fontsize=14)
+        plt.grid(linestyle='dashed', alpha=0.3)
+
+        plt.show(block=False)
+        return plt.gcf()
+
+    def show_spacecraft_ids(self):
+        import requests
+
+        # Replace 'https://api.example.com' with the actual API endpoint URL
+        api_url = 'https://ssd.jpl.nasa.gov/api/horizons.api?format=text&EPHEM_TYPE=VECTORS&OUT_UNITS=AU-D&COMMAND=%22spacecraft%22&CENTER=%27500%4010%27&CSV_FORMAT=%22YES%22&REF_PLANE=ECLIPTIC&REF_SYSTEM=ICRF&TP_TYPE=ABSOLUTE&VEC_LABELS=YES&VEC_CORR=%22NONE%22&VEC_DELTA_T=NO&OBJ_DATA=YES&TLIST=2460287.169281204'
+
+        try:
+            # Make a GET request to the API
+            response = requests.get(api_url)
+
+            # Check if the request was successful (status code 200)
+            if response.status_code == 200:
+                # Print the API response content
+                print(response.text)
+            else:
+                print(f"Error: {response.status_code} - {response.text}")
+
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
 
 if __name__ == '__main__':
@@ -371,43 +652,13 @@ if __name__ == '__main__':
         #manual day
         day = 11
         month = 7
-        year = 2020
+        year = 2012
 
-
-
-
-    # toggle 1 (show)  or 0 (hide) the following objects.
-    # Celestial objects
-    mars = 1
-    earth = 1   # HEE coordinates, by default at x = 1au y=0
-    venus = 1
-    mercury = 1
-    sun = 1     # HEE coordinates, by default at x = 0 y=0
-
-
-    # Spacecraft
-    parker_solar_probe = 1
-    solar_orbiter = 1
-    stereo_A = 1
-    stereo_B = 1   # note: Spacecraft Not operational since 01/10/2014
-    wind = 1
-    bepicolombo = 1
     # plot orbits? 1=yes 0=no
     plot_orbit = 1
 
-    objects = []
-    if parker_solar_probe == 1: objects.append("psp")
-    if solar_orbiter == 1: objects.append("solo")
-    if stereo_A == 1: objects.append("stereo_a")
-    if stereo_B == 1: objects.append("stereo_b")
-    if wind == 1: objects.append("wind")
-    if mars == 1: objects.append("mars")
-    if earth == 1: objects.append("earth")
-    if venus == 1: objects.append("venus")
-    if mercury == 1: objects.append("mercury")
-    if sun == 1: objects.append("sun")
-    if bepicolombo==1:objects.append("bepicolombo")
-    #objects = ["sun", 'earth', 'venus', 'psp', 'solo']
+    objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla']
+    objects = ['sun',  'mercury', 'venus', 'earth', 'wind', 'stereo-a', 'stereo-b']
 
     locations=[]
     # Constants
@@ -415,7 +666,7 @@ if __name__ == '__main__':
     AU = au.value  # km
 
     # Generate map
-    solarsystem = get_sc_coord(date=[year, month, day], objects=objects, orbitlength=50, timeres=24)
+    solarsystem = get_HEE_coord(date=[year, month, day], objects=objects, orbitlength=50, timeres=24)
 
     # gives the location of the objects at the specified DATE without orbits or labels.
     stations_rsun = np.array(solarsystem.locate_simple())
@@ -426,4 +677,12 @@ if __name__ == '__main__':
     # Verbose version of coordinates with orbit, with labels. the last position is the specified date.
     coordinates = solarsystem.locate()
 
-
+    # solarsystem = get_sc_coord(date=[year, month, day], objects=objects, orbitlength=50, timeres=24)
+    # # gives the location of the objects at the specified DATE without orbits or labels.
+    # stations_rsun = np.array(solarsystem.locate_simple())
+    #
+    # # Plotting map of objects
+    # figure = solarsystem.plot()
+    #
+    # # Verbose version of coordinates with orbit, with labels. the last position is the specified date.
+    # coordinates = solarsystem.locate()
