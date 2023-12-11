@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import codecs
 import os
 
-VERSION = '0.0.7'
+VERSION = '0.0.8'
 DESCRIPTION = 'Get HEE Coordinates for spacecraft around the Sun'
 LONG_DESCRIPTION = 'A package that allows to get coordinates and plot different spacecraft around the Sun given a certain date.'
 
