@@ -43,9 +43,9 @@ def help():
     string2 = f"USAGE:\n" \
               f"----------------------------" \
               f"\n" \
-              f"# Show suported spacecraft: run: get_HEE_coord.show_spacecraft_ids(get_HEE_coord) \n" \
-              f"find supported objects:" \
-              f"from sunpy.coordinates import get_horizons_coord " \
+              f"# Show suported spacecraft: run: solarmap.get_HEE_coord.show_spacecraft_ids(solarmap.get_HEE_coord) \n" \
+              f"" \
+              f"# Example: " \
               f"objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla']\n" \
               f"\n" \
               f"# Generate map\n" \
