@@ -54,20 +54,10 @@ Configuration
 Documentation
 =============
 
-    Supported objects:
-        'psp'
-        'solo'
-        'bepicolombo'
-        'stereo_a'
-        'stereo_b'
-        'wind'
-        'mars'
-        'earth'
-        'venus'
-        'mercury'
-        'sun'
+    Supported Spacecraft:
+        https://ssd.jpl.nasa.gov/api/horizons.api?format=text&EPHEM_TYPE=VECTORS&OUT_UNITS=AU-D&COMMAND=%22spacecraft%22&CENTER=%27500%4010%27&CSV_FORMAT=%22YES%22&REF_PLANE=ECLIPTIC&REF_SYSTEM=ICRF&TP_TYPE=ABSOLUTE&VEC_LABELS=YES&VEC_CORR=%22NONE%22&VEC_DELTA_T=NO&OBJ_DATA=YES&TLIST=2460287.169281204
 
-
+    Supports all planets
 
     
 
@@ -75,15 +65,15 @@ Usage
 =====
 EXAMPLE:
 
-.. code-block::
+.. code-block:: python
     
     import solarmap
     import numpy as np
     
-    objects = ['sun', 'earth', 'venus', 'psp', 'solo']
+    objects = ['sun', 'earth', 'Venus', 'psp', 'solo', 'tesla', 'mars']
 
     # Generate map
-    solarsystem = solarmap.get_sc_coord(date=[2021, 6, 26], objects=objects,orbitlength=100, timeres=24)
+    solarsystem = solarmap.get_HEE_coord(date=[2023, 6, 26], objects=objects, orbitlength=100, timeres=24)
 
     # gives the location of the objects at the specified DATE without orbits or labels.
     simple_coord_rsun = np.array(solarsystem.locate_simple())

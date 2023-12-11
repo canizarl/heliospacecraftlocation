@@ -396,17 +396,17 @@ class get_HEE_coord:
 
     def planet_ids(self, object=""):
         # simplifying planet names
-        if object == "mercury": object = "Mercury Barycenter"
-        elif object == "venus": object = "Venus Barycenter"
-        elif object == "earth": object = "Earth-Moon Barycenter"  #
-        elif object == "mars": object = "Mars Barycenter"  #
-        elif object == "jupiter": object = "Jupiter Barycenter"  #
-        elif object == "saturn": object = "Saturn Barycenter"  #
-        elif object == "uranus": object = "Uranus Barycenter"  #
-        elif object == "neptune": object = "Neptune Barycenter"  #
-        elif object == "pluto": object = "Pluto Barycenter"  #
+        if object.capitalize() == "Mercury": object = "Mercury Barycenter"
+        elif object.capitalize() == "Venus": object = "Venus Barycenter"
+        elif object.capitalize() == "Earth" : object = "Earth-Moon Barycenter"  #
+        elif object.capitalize() == "Mars": object = "Mars Barycenter"          #
+        elif object.capitalize() == "Jupiter": object = "Jupiter Barycenter"    #
+        elif object.capitalize() == "Saturn": object = "Saturn Barycenter"      #
+        elif object.capitalize() == "Uranus": object = "Uranus Barycenter"      #
+        elif object.capitalize() == "Neptune": object = "Neptune Barycenter"    #
+        elif object.capitalize() == "Pluto": object = "Pluto Barycenter"        #
         elif object =="":
-            print("mercury, venus, earth, mars, saturn, uranus, neptune, pluto ")
+            print("mercury, venus, earth, mars, saturn, uranus, neptune, pluto")
         else:
             return object
         return object
@@ -636,6 +636,42 @@ class get_HEE_coord:
             print(f"An error occurred: {e}")
 
 
+    def get_all_object_ids(self):
+        import requests
+        # URL for the Horizons API
+        horizons_url = "https://ssd.jpl.nasa.gov/horizons_batch.cgi"
+
+        # Parameters for the API request
+        params = {
+            'batch': '1',  # One-time request
+            'COMMAND': "'*'",  # '*' selects all objects
+            'MAKE_EPHEM': 'YES',  # Generate ephemerides
+            'TABLE_TYPE': 'VECTORS',
+            'OUT_UNITS': 'AU-D',
+            'REF_PLANE': 'ECLIPTIC',
+            'REF_SYSTEM': 'J2000',
+            'VEC_LABELS': 'YES',  # Include vector labels
+            'CSV_FORMAT': 'YES'  # Output in CSV format
+        }
+
+        # Make the API request
+        response = requests.get(horizons_url, params=params)
+
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Split the response into lines and extract object IDs from CSV
+            lines = response.text.split('\n')
+            object_ids = [line.split(',')[0].strip() for line in lines[5:-1]]
+            print("Object IDs:")
+            for obj_id in object_ids:
+                print(obj_id)
+
+            return object_ids
+        else:
+            print(f"Error: {response.status_code}")
+            return None
+
+
 if __name__ == '__main__':
 
     # #########################
@@ -658,7 +694,7 @@ if __name__ == '__main__':
     plot_orbit = 1
 
     objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla']
-    objects = ['sun',  'mercury', 'venus', 'earth', 'wind', 'stereo-a', 'stereo-b']
+    objects = ['sun',  'mercury', 'venus', 'Earth', 'wind', 'stereo-a', 'stereo-b']
 
     locations=[]
     # Constants
