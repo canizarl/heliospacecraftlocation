@@ -397,7 +397,7 @@ class get_HEE_coord:
             self.orbitlength = 1
 
     def planet_ids(self, object=""):
-        # simplifying planet names
+        # simplifying planet names or make additional labels
         if object.capitalize() == "Mercury": object = "Mercury Barycenter"
         elif object.capitalize() == "Venus": object = "Venus Barycenter"
         elif object.capitalize() == "Earth" : object = "Earth-Moon Barycenter"  #
@@ -407,6 +407,8 @@ class get_HEE_coord:
         elif object.capitalize() == "Uranus": object = "Uranus Barycenter"      #
         elif object.capitalize() == "Neptune": object = "Neptune Barycenter"    #
         elif object.capitalize() == "Pluto": object = "Pluto Barycenter"        #
+        elif object.capitalize() == "Stereo_a": object = "STEREO-A"
+        elif object.capitalize() == "Stereo_b": object = "STEREO-B"
         elif object =="":
             print("mercury, venus, earth, mars, saturn, uranus, neptune, pluto")
         else:
@@ -697,7 +699,7 @@ if __name__ == '__main__':
     # plot orbits? 1=yes 0=no
     plot_orbit = 1
 
-    objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla']
+    objects = ['sun', 'mars express', 'earth', 'venus', 'psp', 'solo', 'tesla', 'stereo_a', 'stereo_b']
     # objects = ['sun',  'mercury', 'venus', 'Earth', 'wind', 'stereo-a', 'stereo-b']
 
     locations=[]
